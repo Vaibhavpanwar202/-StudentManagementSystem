@@ -1,0 +1,128 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+// Student class
+class Student {
+    private int rollNo;
+    private String name;
+    private String course;
+    private double marks;
+
+    public Student(int rollNo, String name, String course, double marks) {
+        this.rollNo = rollNo;
+        this.name = name;
+        this.course = course;
+        this.marks = marks;
+    }
+
+    public int getRollNo() {
+        return rollNo;
+    }
+
+    public void displayDetails() {
+        System.out.println("Roll No: " + rollNo);
+        System.out.println("Name   : " + name);
+        System.out.println("Course : " + course);
+        System.out.println("Marks  : " + marks);
+        System.out.println("---------------------------");
+    }
+}
+
+// Main class
+public class StudentManagementSystem {
+    private static ArrayList<Student> students = new ArrayList<>();
+    private static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice;
+        do {
+            System.out.println("\n==== Student Management System ====");
+            System.out.println("1. Add Student");
+            System.out.println("2. View All Students");
+            System.out.println("3. Search Student by Roll No");
+            System.out.println("4. Delete Student by Roll No");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addStudent();
+                    break;
+                case 2:
+                    viewStudents();
+                    break;
+                case 3:
+                    searchStudent();
+                    break;
+                case 4:
+                    deleteStudent();
+                    break;
+                case 5:
+                    System.out.println("Exiting... Thank you!");
+                    break;
+                default:
+                    System.out.println("Invalid choice! Try again.");
+            }
+        } while (choice != 5);
+    }
+
+    // Method to add a student
+    private static void addStudent() {
+        System.out.print("Enter Roll No: ");
+        int rollNo = sc.nextInt();
+        sc.nextLine(); // Consume newline
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+        System.out.print("Enter Course: ");
+        String course = sc.nextLine();
+        System.out.print("Enter Marks: ");
+        double marks = sc.nextDouble();
+
+        Student s = new Student(rollNo, name, course, marks);
+        students.add(s);
+        System.out.println("Student added successfully!");
+    }
+
+    // Method to view all students
+    private static void viewStudents() {
+        if (students.isEmpty()) {
+            System.out.println("No students found.");
+            return;
+        }
+        System.out.println("\n--- Student List ---");
+        for (Student s : students) {
+            s.displayDetails();
+        }
+    }
+
+    // Method to search student by roll number
+    private static void searchStudent() {
+        System.out.print("Enter Roll No to search: ");
+        int rollNo = sc.nextInt();
+        boolean found = false;
+        for (Student s : students) {
+            if (s.getRollNo() == rollNo) {
+                System.out.println("Student Found:");
+                s.displayDetails();
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            System.out.println("Student not found!");
+        }
+    }
+
+    // Method to delete student by roll number
+    private static void deleteStudent() {
+        System.out.print("Enter Roll No to delete: ");
+        int rollNo = sc.nextInt();
+        boolean removed = students.removeIf(s -> s.getRollNo() == rollNo);
+        if (removed) {
+            System.out.println("Student deleted successfully.");
+        } else {
+            System.out.println("Student not found!");
+        }
+    }
+}
